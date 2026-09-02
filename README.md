@@ -162,7 +162,82 @@ The application can be built and run inside a Docker container.
 
 
 
-Make sure Docker Desktop is installed and running.
+## CI/CD Pipeline & Cloud Deployment
+
+### Continuous Integration
+
+GitHub Actions was used to automate the CI pipeline.
+
+The pipeline runs automatically whenever code is pushed to the `main` branch.
+
+The workflow performs the following checks:
+
+1. Checks out the project code.
+2. Sets up Python 3.12.
+3. Installs the application dependencies.
+4. Runs a Python syntax/quality check using `py_compile`.
+5. Builds the Docker image.
+
+### Continuous Deployment
+
+The application was deployed to Render using the existing Dockerfile.
+
+Render is connected to the GitHub repository and deploys the application from the `main` branch.
+
+### Live Application
+
+Live URL:
+
+https://buildlabs-task1.onrender.com/
+
+### Application Endpoints
+
+- `/` - Application information
+- `/health` - Application health check
+- `/tasks` - List of available tasks
+
+### Environment Configuration
+
+The following environment variable was configured on Render:
+
+| Variable | Value |
+|----------|-------|
+| APP_ENV | production |
+
+The application also supports the `PORT` environment variable.
+
+### CI/CD Workflow
+
+The CI/CD workflow is located at:
+
+`.github/workflows/ci-cd.yml`
+
+The workflow is triggered automatically when code is pushed to the `main` branch.
+
+### Deployment Process
+
+1. Developed and containerized the Flask application.
+2. Created a GitHub Actions workflow.
+3. Pushed the workflow to GitHub.
+4. GitHub Actions automatically tested the application and built the Docker image.
+5. Connected the GitHub repository to Render.
+6. Deployed the Dockerized application to Render.
+7. Configured the production environment variable.
+8. Tested the live application endpoints.
+
+### Reflection
+
+#### Deployment Process
+
+The application was deployed using Docker and Render. GitHub Actions was configured to automatically perform quality checks and build the Docker image whenever changes were pushed to the main branch. Render was then used to host the application in the cloud.
+
+#### Benefits of CI/CD
+
+CI/CD improves software delivery by automating repetitive tasks, detecting errors early, reducing manual deployment work, and making it easier to release updates consistently.
+
+#### Challenges Encountered
+
+One challenge was configuring the application to work correctly in a cloud environment. Understanding environment variables and ensuring that the Flask application listens on the correct host and port were important parts of the deployment process.Make sure Docker Desktop is installed and running.
 
 
 
