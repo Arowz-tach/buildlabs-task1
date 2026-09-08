@@ -1,0 +1,32 @@
+name: Application Monitoring
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check application health
+        run: |
+          python - <<'PY'
+          import time
+          import urllib.request
+
+          url = "https://buildlabs-task1.onrender.com/health"
+
+          start = time.time()
+          response = urllib.request.urlopen(url, timeout=30)
+          response_time = round((time.time() - start) * 1000, 2)
+
+          print(f"HTTP Status: {response.status}")
+          print(f"Response Time: {response_time} ms")
+
+          if response.status != 200:
+              raise SystemExit("Health check failed")
+
+          print("STATUS: UP")
+          PY
