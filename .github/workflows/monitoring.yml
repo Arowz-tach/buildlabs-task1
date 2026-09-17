@@ -18,15 +18,26 @@ jobs:
 
           url = "https://buildlabs-task1.onrender.com/health"
 
-          start = time.time()
-          response = urllib.request.urlopen(url, timeout=30)
-          response_time = round((time.time() - start) * 1000, 2)
+          for attempt in range(1, 4):
+              try:
+                  print(f"Health check attempt {attempt}")
 
-          print(f"HTTP Status: {response.status}")
-          print(f"Response Time: {response_time} ms")
+                  start = time.time()
+                  response = urllib.request.urlopen(url, timeout=60)
+                  response_time = round((time.time() - start) * 1000, 2)
 
-          if response.status != 200:
-              raise SystemExit("Health check failed")
+                  print(f"HTTP Status: {response.status}")
+                  print(f"Response Time: {response_time} ms")
 
-          print("STATUS: UP")
+                  if response.status == 200:
+                      print("STATUS: UP")
+                      break
+
+              except Exception as error:
+                  print(f"Attempt failed: {error}")
+
+                  if attempt == 3:
+                      raise SystemExit("Health check failed after 3 attempts")
+
+                  time.sleep(10)
           PY
